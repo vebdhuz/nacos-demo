@@ -1,6 +1,7 @@
 package com.example.client.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,11 +24,11 @@ public class HelloController {
     return helloClient.Hello("asdfasdga");
   }
 
-  @Value("${provider.url}")
+  @Value("${provider.url:}")
   private String apiUrl;
 
   @GetMapping("/hello1")
   public String Hello1() {
-    return restTemplate.getForObject("http://provider/hello/{str}", String.class, "abc124" + apiUrl);
+    return restTemplate.getForObject(apiUrl + "/hello/{str}", String.class, "abc124");
   }
 }
